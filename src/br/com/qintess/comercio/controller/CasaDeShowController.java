@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.qintess.comercio.dao.Dao;
@@ -15,28 +16,39 @@ import br.com.qintess.comercio.model.Cliente;
 public class CasaDeShowController {
 
 	@Autowired
-	private Dao dao; 
-	
+	private Dao dao;
+
 	@RequestMapping("")
 	public String carrega(Model model) {
+		model.addAttribute("casasdeshow", dao.buscaTodos(CasaDeShow.class));
 		model.addAttribute("casadeshow", new CasaDeShow());
 		return "cadastrocasadeshow";
 	}
-	
+
 	@RequestMapping("/salva")
 	public String salva(@ModelAttribute CasaDeShow casaDeShow) {
-		dao.salva(casaDeShow);
-		return"redirect:/cadastrocasadeshow";
+		if (casaDeShow.getId() == null) {
+
+			dao.salva(casaDeShow);
+		} else {
+			dao.altera(casaDeShow);
+		}
+
+		return "redirect:/cadastrocasadeshow";
 	}
-	
-//	@RequestMapping("/salva")
-//	public String salva(@ModelAttribute CasaDeShow casaDeShow) {
-//		if(casaDeShow.getId()==0) {
-//		dao.salva(casaDeShow);
-//		} else {
-//			dao.altera(casaDeShow);
-//		}
-//		return"redirect:/cadastrocasadeshow";
-//	}
-	
+
+	@RequestMapping("/deleta/{id}")
+	public String deleta(@PathVariable(name = "id") Integer id) {
+		CasaDeShow casaDeShow = dao.buscaPorId(CasaDeShow.class, id);
+		dao.deleta(casaDeShow);
+		return "redirect:/cadastrocasadeshow";
+	}
+
+	@RequestMapping("/altera/{id}")
+	public String alterar(@PathVariable(name = "id") Integer id, Model model) {
+		model.addAttribute("casasdeshow", dao.buscaTodos(CasaDeShow.class));
+		model.addAttribute("casadeshow", dao.buscaPorId(CasaDeShow.class, id));
+		return "/cadastrocasadeshow";
+	}
+
 }
