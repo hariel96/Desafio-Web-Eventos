@@ -1,10 +1,17 @@
 package br.com.qintess.comercio.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,11 +30,32 @@ public class Cliente {
 	@Column(nullable = false)
 	private String email;
 	
-	@Column(nullable = false)
-	private String telefone;
+	@Column(nullable = false, length = 150)
+	private String senha;
 	
-	@Column(nullable = false, unique = true)
-	private int cpf;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cliente")
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Papel> papeis;
+	
+	
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public List<Papel> getPapeis() {
+		return papeis;
+	}
+
+	public void setPapeis(List<Papel> papeis) {
+		this.papeis = papeis;
+	}
+
+	
 
 	public Integer getId() {
 		return id;
@@ -51,21 +79,5 @@ public class Cliente {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public int getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(int cpf) {
-		this.cpf = cpf;
 	}
 }

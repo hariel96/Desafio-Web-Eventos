@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,9 +32,21 @@ public class Evento {
 	@Column(nullable = false)
 	private String descricao;
 	
+	//@Lob
+	//@Column(columnDefinition = "mediumblob")
+	//private byte[] imagemEvento;
+	
+//	public byte[] getImagemEvento() {
+//		return imagemEvento;
+//	}
+
+//	public void setImagemEvento(byte[] imagemEvento) {
+//		this.imagemEvento = imagemEvento;
+//	}
+
 	@Column(nullable = false)
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	private Calendar data;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate data;
 	
 	@Column(nullable = false)
 	private Integer qtd_ingressos;
@@ -69,11 +82,11 @@ public class Evento {
 		this.descricao = descricao;
 	}
 
-	public Calendar getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Calendar data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 
@@ -101,11 +114,10 @@ public class Evento {
 		this.casaDeshow = casaDeshow;
 	}
 
-//	@Override
-//	public String toString() {
-//		// TODO Auto-generated method stub
-//		return super.toString();
-//	}
+	@Override
+	public String toString() {
+		return "Nome: " + nome + ", ID da Casa de Show: " + casaDeshow;
+	}
 	
 	
 	

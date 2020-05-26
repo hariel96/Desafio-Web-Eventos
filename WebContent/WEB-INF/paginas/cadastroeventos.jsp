@@ -2,89 +2,100 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Área de Cadastro de Eventos</title>
-<spring:url value="/" var="volta"></spring:url>
+<spring:url value="/cadastroeventos/salva" var="salva"></spring:url>
 
-<style>
-body {
-	background-color: grey;
-	text-align: left;
-	font-family: cursive;
-}
-
-h1 {
-	text-align: center;
-	background-color: black;
-	font-size: 50px;
-	color: white;
-	font-family: fantasy;
-}
-
-h3 {
-	font-size: 32px;
-	font-family: cursive;
-	text-align: left;
-}
-
-label {
-	font-size: 20px;
-}
-</style>
-
-
+<link href='<spring:url value="/resources/css/bootstrap.css" />'
+	rel="stylesheet" />
+<script src='<spring:url value="/resources/js/jquery-3.5.1.min.js" />'></script>
+<script src='<spring:url value="/resources/js/bootstrap.js" />'></script>
 </head>
 <body>
-	<h1>
-		<i>Formulário para Cadastro de Eventos</i>
-	</h1>
-	<hr />
-	<form:form action="salva" modelAttribute="evento">
-		<form:hidden path="id" />
-		<label><b>Nome:</b></label>
-		<br />
-		<form:input path="nome" />
-		<br />
+	<jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-		<label><b>Descrição:</b></label>
-		<br />
-		<form:input path="descricao" />
-		<br />
+	<div class="container mt-5">
+		<div class="row">
 
-		<label><b>Data:</b></label>
-		<br />
-		<form:input path="data" />
+			<jsp:include page="${request.contextPath}/menuLateral"></jsp:include>
+			<div class="col-lg-9">
 
-		<br />
-		<label><b>Quantidade de Ingressos:</b></label>
-		<br />
-		<form:input path="qtd_ingressos" />
-		<br />
-		<label><b>Preço:</b></label>
-		<br />
-		<form:input path="preco" />
-		<br />
-		<label><b>ID da Casa de Show:</b></label>
-		<br />
-		<form:input path="casaDeshow" />
-		<br />
-		<br />
+				<c:if test="${not empty mensagemErro }">
+					<div id="divMensagemErro" class="alert alert-danger" role="alert">
+						${mensagemErro }</div>
+				</c:if>
 
-		<form:button style="font-size: 31px">
-			<b> ${evento.id == null ?'CADASTRAR' : 'ALTERAR' }</b>
+				<c:if test="${not empty mensagemSucesso }">
+					<div id="divMensagemSucesso" class="alert alert-sucess"
+						role="alert">${mensagemSucesso }</div>
+				</c:if>
+
+
+				<div class="pb-2 mt-4 mb-2 border-bottom">
+					<h1>Formulário para Cadastro de Eventos</h1>
+				</div>
+
+
+				<form:form action="${salva }" modelAttribute="evento">
+					<form:hidden path="id" />
+					<div class="form-group">
+						<label>Nome:</label>
+						<form:input path="nome" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Descrição:</label>
+						<form:input path="descricao" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Data:</label>
+						<!--<form:input path="data" cssClass="form-control" />-->
+						<input type="date" class="form-control" name="data" value="${evento.data }"/>
+					</div>
+					<div class="form-group">
+						<label>Quantidade de Ingressos:</label>
+						<form:input path="qtd_ingressos" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Preço:</label>
+						<form:input path="preco" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>ID da Casa de Show:</label>
+						<input id="id" name="id" class="form-control" />
+					</div>
+
+					<!--<div class="form-group">
+				<label>Imagem</label>
+				<div class="custom-file">
+					<input type="file" name="imagem" class="custom-file-input"
+						value="${imagemEvento }" /> <label class="custom-file-label">Escolha
+						uma imagem</label>
+				</div>
+			</div> -->
+
+					<br>
+					<form:button>
+			 ${evento.id == null ?'CADASTRAR' : 'ALTERAR' }
 		</form:button>
 
-	</form:form>
+				</form:form>
 
+			</div>
+		</div>
+	</div>
 
-	<br />
-	<br />
-	<h3>
-		<a style="color: black" href="${volta }">VOLTAR PARA O MENU
-			INICIAL</a>
-	</h3>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#divMensagemErro').delay(5000).fadeOut('slow');
+			$('#divMensagemSucesso').delay(5000).fadeOut('slow');
+		});
+	</script>
+
 </body>
 </html>

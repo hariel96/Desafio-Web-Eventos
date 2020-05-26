@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,55 +14,48 @@
 <spring:url value="cadastrocasadeshow/" var="cadastrocasadeshow"></spring:url>
 <spring:url value="cadastroeventos/" var="cadastroeventos"></spring:url>
 <spring:url value="compraingressos/" var="compraingressos"></spring:url>
-<!--<link rel="stylesheet" href="C:\Users\harie\eclipse-workspace\meu-comercio-desafiostyle.css"> -->
-
-<style>
-body {
-	background-color: grey;
-}
-
-h1 {
-	background-color: black;
-	font-size: 60px;
-	text-align: center;
-	color: white;
-}
-
-h3 {
-	font-size: 28px;
-	text-align: left;
-	font-family: cursive;
-}
-
-a {
-	color: black;
-}
-</style>
-
+<link href='<spring:url value="/resources/css/bootstrap.css" />'
+	rel="stylesheet" />
+<script src='<spring:url value="/resources/js/jquery-3.5.1.min.js" />'></script>
+<script src='<spring:url value="/resources/js/bootstrap.js" />'></script>
 </head>
 <body>
-	<h1>
-		<i>Show Mania</i>
-	</h1>
-	<hr />
+	<jsp:include page="${request.contextPath}/menu"></jsp:include>
 
-	<h3 style="font-size: 35px;">
-		<a href="${telainicial }"><strong>Tela de Eventos</strong></a>
-	</h3>
+	<!-- Page Content -->
+	<div class="container mt-5">
 
-	<h3>
-		<a href="${cadastrocliente }">Cadastro de Clientes</a>
-	</h3>
-	<h3>
-		<a href="${cadastrocasadeshow }">Cadastro de Casa de Show</a>
-	</h3>
-	<h3>
-		<a href="${cadastroeventos }">Cadastro de Eventos</a>
-	</h3>
+		<div class="row">
 
-	<h3>
-		<a href="${compraingressos }">Compra de Ingressos</a>
-	</h3>
+			<!-- Menu -->
+			<jsp:include page="${request.contextPath}/menuLateral"></jsp:include>
 
+			<div class="col-lg-9 mt-5">
+
+				<div class="row">
+
+					<c:forEach var="casadeshow" items="${casasdeshow}">
+						<div class="col-lg-4 col-md-6 mb-4">
+							<div class="card h-100">
+								<a href="#"><img class="card-img-top"
+									src="data:image/jpge;base64,${casadeshow.imagemEncoded}" alt=""></a>
+								<div class="card-body">
+									<h4 class="card-title">
+										<a href="#">Casa de Show: ${casadeshow.nome}</a>
+									</h4>
+									<h5>Endereço: ${casadeshow.endereco}</h5>
+
+								</div>
+								<div class="card-footer">
+									<small class="text-muted">&#9733; &#9733; &#9733;
+										&#9733; &#9734;</small>
+								</div>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

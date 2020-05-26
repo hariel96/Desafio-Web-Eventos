@@ -29,7 +29,7 @@ public class HibernateConfig {
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/dbeventos");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/dbeventos?useTimezone=trueuseUnicode=true&useLegacyDatetimeCode=false&serverTimezone=America/Sao_Paulo&characterEncoding=utf-8&useUnicode=true");
 		dataSource.setUsername("root");
 		dataSource.setPassword("263001");
 		
@@ -49,7 +49,9 @@ public class HibernateConfig {
 		hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
 		hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
 		hibernateProperties.setProperty("hibernate.show_sql", "true");
-		hibernateProperties.setProperty("hibernate.jdbc.time_zone", "UTC");
+		hibernateProperties.setProperty("hibernate.connection.CharSet", "utf8");
+		hibernateProperties.setProperty("hibernate.connection.characterEncoding", "utf8");
+		hibernateProperties.setProperty("hibernate.connection.useUnicode", "true");
 		
 		return hibernateProperties;
 	}

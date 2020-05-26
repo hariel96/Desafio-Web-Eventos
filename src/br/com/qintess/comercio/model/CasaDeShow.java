@@ -1,10 +1,17 @@
 package br.com.qintess.comercio.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +32,33 @@ public class CasaDeShow {
 	
 	@Column(nullable = false)
 	private Integer capacidade;
+	
+	@Lob
+	@Column(columnDefinition = "mediumblob")
+	private byte[] imagemCasaDeShow;
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "casaDeshow", fetch = FetchType.EAGER)
+	private List<Evento> eventos;
+	
+	
+	@Transient
+	private String imagemEncoded;
+
+	public String getImagemEncoded() {
+		return imagemEncoded;
+	}
+
+	public void setImagemEncoded(String imagemEncoded) {
+		this.imagemEncoded = imagemEncoded;
+	}
+
+	public byte[] getImagemCasaDeShow() {
+		return imagemCasaDeShow;
+	}
+
+	public void setImagemCasaDeShow(byte[] imagemCasaDeShow) {
+		this.imagemCasaDeShow = imagemCasaDeShow;
+	}
 
 	public Integer getId() {
 		return id;
@@ -58,4 +92,8 @@ public class CasaDeShow {
 		this.capacidade = capacidade;
 	}
 	
+	@Override
+	public String toString() {
+		return ""+id;
+	}
 }

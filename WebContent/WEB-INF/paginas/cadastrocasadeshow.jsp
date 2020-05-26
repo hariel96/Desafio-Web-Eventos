@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,110 +13,117 @@
 <spring:url value="/cadastrocasadeshow/altera/" var="altera"></spring:url>
 <spring:url value="/cadastrocasadeshow/salva" var="salva"></spring:url>
 <spring:url value="/" var="volta"></spring:url>
-<style>
-body {
-	background-color: grey;
-	text-align: center;
-	font-family: cursive;
-}
 
-h1 {
-	background-color: black;
-	font-size: 50px;
-	color: white;
-	font-family: fantasy;
-}
-
-h2 {
-	background-color: black;
-	font-size: 33px;
-	color: white;
-
-}
-
-h3 {
-	font-size: 32px;
-	font-family: cursive;
-}
-
-form {
-	text-align: left;
-	font-size: 19px;
-}
-
-form:button {
-	font-size: 42px
-}
-
-table{
-	font-size: 21px;
-	
-}
-</style>
-
-
+<link href='<spring:url value="/resources/css/bootstrap.css" />'
+	rel="stylesheet" />
+<script src='<spring:url value="/resources/js/jquery-3.5.1.min.js" />'></script>
+<script src='<spring:url value="/resources/js/bootstrap.js" />'></script>
 </head>
 <body>
-	<h1>
-		<i>Formulário para Cadastro de Casa de Show</i>
-	</h1>
-	<hr />
-	<form:form action="${salva }" modelAttribute="casadeshow">
-		<form:hidden path="id" />
-		<label><b>Nome:</b></label>
-		<br />
-		<form:input path="nome" />
-		<br />
-
-		<label><b>Endereço:</b></label>
-		<br />
-		<form:input path="endereco" />
-		<br />
-
-		<label><b>Capacidade:</b></label>
-		<br />
-		<form:input path="capacidade" />
-		<br />
-		<br />
-
-		<form:button style="font-size: 21px">
-			<b> ${casadeshow.id == null ?'CADASTRAR': 'Alterar'} </b>
-		</form:button>
-	</form:form>
-	<hr />
-	<h2>
-		<b>Todas as nossas casas de show já cadastradas:</b>
-	</h2>
-	
-	<table>
-		<tr>
-			<th>ID:</th>
-			<th>Nome:</th>
-			<th>Endereço:</th>
-			<th>Capacidade:</th>
-			<th colspan="2">Ações:</th>
-		</tr>
-
-		<c:forEach var="casadeshow" items="${casasdeshow }">
-			<tr>
-				<td>${casadeshow.id }</td>
-				<td>${casadeshow.nome }</td>
-				<td>${casadeshow.endereco }</td>
-				<td>${casadeshow.capacidade }</td>
-				<td><a style="color: blue" href="${altera}${casadeshow.id}"><i>Alterar</i></a></td>
-				<td><a style="color: blue" href="${deleta}${casadeshow.id}"><i>Deletar</i></a>
-			</tr>
-		</c:forEach>
-
-	</table>
-
-	<br />
-	<br />
+	<jsp:include page="${request.contextPath}/menu"></jsp:include>
 
 
-	<h3>
-		<a style="color: black" href="${volta }">VOLTAR PARA O MENU INICIAL</a>
-	</h3>
+	<div class="container mt-5">
+		<div class="row">
+			<jsp:include page="${request.contextPath}/menuLateral"></jsp:include>
 
+			<div class="col-lg-9">
+
+				<c:if test="${not empty mensagemErro }">
+					<div id="divMensagemErro" class="alert alert-danger" role="alert">
+						${mensagemErro }</div>
+				</c:if>
+
+				<c:if test="${not empty mensagemSucesso }">
+					<div id="divMensagemSucesso" class="alert alert-sucess"
+						role="alert">${mensagemSucesso }</div>
+				</c:if>
+
+				<div class="pb-2 mt-4 mb-2 border-bottom">
+					<h1>Formulário para Cadastro de Casa de Show</h1>
+				</div>
+
+				<form:form action="${salva }" modelAttribute="casadeshow"
+					enctype="multipart/form-data" cssClass="mb-2">
+					<form:hidden path="id" />
+					<form:hidden path="imagemCasaDeShow" />
+
+					<div class="form-group">
+						<label>Nome:</label>
+						<form:input path="nome" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Endereço:</label>
+						<form:input path="endereco" cssClass="form-control" />
+					</div>
+					<div class="form-group">
+						<label>Capacidade:</label>
+						<form:input path="capacidade" cssClass="form-control" />
+					</div>
+
+					<div class="form-group">
+						<label>Imagem</label>
+						<div class="custom-file">
+							<input type="file" name="imagem" class="custom-file-input"
+								value="${imagemCasaDeShow }" /> <label
+								class="custom-file-label">Escolha uma imagem</label>
+						</div>
+					</div>
+
+					<c:if test="${casaDeShow.id ne 0 }">
+						<div class="mb-5">
+							<img class="img-thumbnail"
+								src="data:image/jpge;base64,${imagemCasaDeShow }"
+								alt="imagem não encontrada" />
+						</div>
+					</c:if>
+
+
+					<br>
+					<form:button>
+			${casadeshow.id == null ?'CADASTRAR': 'Alterar'} 
+			</form:button>
+				</form:form>
+				<br>
+				<h2>Todas as nossas casas de show já cadastradas:</h2>
+
+				<table class="table">
+					<tr>
+						<th>ID:</th>
+						<th>Nome:</th>
+						<th>Endereço:</th>
+						<th>Capacidade:</th>
+						<th colspan="2">Ações:</th>
+					</tr>
+
+					<c:forEach var="casadeshow" items="${casasdeshow }">
+						<tr>
+							<td>${casadeshow.id }</td>
+							<td>${casadeshow.nome }</td>
+							<td>${casadeshow.endereco }</td>
+							<td>${casadeshow.capacidade }</td>
+							<td><a href="${altera}${casadeshow.id}">Alterar</a></td>
+							<td><a href="${deleta}${casadeshow.id}"
+								onclick="return confirm('Deseja realmente Deletar essa Casa de Show?')">Deletar</a>
+						</tr>
+					</c:forEach>
+
+				</table>
+
+				<br /> <br />
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#divMensagemErro').delay(5000).fadeOut('slow');
+			$('#divMensagemSucesso').delay(5000).fadeOut('slow');
+		});
+	</script>
 </body>
 </html>

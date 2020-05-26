@@ -1,5 +1,8 @@
 package br.com.qintess.comercio.config;
 
+import javax.servlet.Filter;
+
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 //classe iniciada automaticamente pelo Spring que irá realizar todas as configurações necessárias.
@@ -8,7 +11,9 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Class<?>[] getRootConfigClasses() {// Método que configura componentes externos como o hibernate
 			return new Class[] {
-					HibernateConfig.class
+					WebMvcConfig.class,
+					HibernateConfig.class,
+					WebSecurityConfig.class
 			};
 	
 	}
@@ -16,7 +21,6 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	@Override
 	protected Class<?>[] getServletConfigClasses() { // Método que configura o MVC do spring
 		return new Class[] {
-		WebMvcConfig.class
 		};
 	}
 
@@ -27,4 +31,9 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		};
 	}
 
+	protected Filter[] getServletFilters() {
+		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		return new Filter[] {characterEncodingFilter};
+	}
 }
