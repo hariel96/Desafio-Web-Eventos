@@ -9,7 +9,7 @@
 
 	<properties>
 		<spring>5.2.5.RELEASE</spring>
-		<spring.security>5.2.2.RELEASE</spring.security>
+		<spring.security>5.2.10.RELEASE</spring.security>
 	</properties>
 
 
